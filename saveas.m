@@ -78,4 +78,6 @@ for i_R = 1:N
     
 end
 
+fclose(fid);
+
 end
