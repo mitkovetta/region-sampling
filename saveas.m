@@ -54,9 +54,9 @@ for i_R = 1:N
         [num2str(i_R, filenameFormat) P.suffix '.' P.filetype]);
     
     if ismember(P.filetype, {'jpg', 'jpeg'})
-        imwrite(R(i_R), currentPath, 'Quality', P.quality);
+        imwrite(R(:,:,:,i_R), currentPath, 'Quality', P.quality);
     else
-        imwrite(R(i_R), currentPath);
+        imwrite(R(:,:,:,i_R), currentPath);
     end
     
     fprintf(fid, currentPath);
