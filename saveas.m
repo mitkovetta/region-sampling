@@ -7,15 +7,15 @@ V = @validateattributes;
 isString        = @(x)V(x, {'char'},	{'vector'});
 checkType       = @(x)(any(validatestring(x, {'jpg', 'jpeg', 'tif', 'png'})));
 checkQuality    = @(x)V(x, {'numeric'}, {'scalar', 'integer', 'positive', '<=', 100});
-checkAttrib 	= @(x)V(x, {'numeric'}, {'2d', 'nonempty'});
+checkLabels 	= @(x)V(x, {'numeric'}, {'2d', 'nonempty'});
 
 parser = inputParser();
 
 parser.addParameter('filetype',     'jpg',  checkType);
 parser.addParameter('quality',      [],     checkQuality);
 parser.addParameter('suffix',       '',     isString);
-parser.addParameter('attributes',   [],     checkAttrib);
-parser.addParameter('attrFormat',   [],     isString);
+parser.addParameter('labels',       [],     checkLabels);
+parser.addParameter('labelsFormat', [],     isString);
 
 parser.parse(varargin{:});
 
@@ -39,12 +39,12 @@ end
 filenameWidth = length(num2str(N));
 filenameFormat = ['%0' num2str(filenameWidth) 'd'];
 
-if ~isempty(P.attributes)
-    if isempty(P.attrFormat)
-        attributesWidth = length(num2str(max(P.attributes(:))));
-        attrFormat = ['%' num2str(attributesWidth) 'd'];
+if ~isempty(P.labels)
+    if isempty(P.labelsFormat)
+        labelsWidth = length(num2str(max(P.labels(:))));
+        labelsFormat = ['%' num2str(labelsWidth) 'd'];
     else
-        attrFormat = P.attrFormat;
+        labelsFormat = P.labelsFormat;
     end
 end
 
@@ -61,14 +61,14 @@ for i_R = 1:N
     
     fprintf(fid, currentPath);
     
-    if ~isempty(P.attributes)
-        if size(P.attributes, 1) > 1
-            for k = 1:size(P.attributes,2)
-                fprintf(fid, [' ' attrFormat], P.attributes(i_R, k));
+    if ~isempty(P.labels)
+        if size(P.labels, 1) > 1
+            for k = 1:size(P.labels,2)
+                fprintf(fid, [' ' labelsFormat], P.labels(i_R, k));
             end
-        else % one set of attributes for all files
-            for k = 1:length(P.attributes)
-                fprintf(fid, [' ' attrFormat], P.attributes(k));
+        else % one set of labels for all files
+            for k = 1:length(P.labels)
+                fprintf(fid, [' ' labelsFormat], P.labels(k));
             end
         end
         
