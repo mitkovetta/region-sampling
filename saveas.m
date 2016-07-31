@@ -11,11 +11,12 @@ checkLabels 	= @(x)V(x, {'numeric'}, {'2d', 'nonempty'});
 
 parser = inputParser();
 
-parser.addParameter('filetype',     'jpg',  checkType);
-parser.addParameter('quality',      [],     checkQuality);
-parser.addParameter('suffix',       '',     isString);
-parser.addParameter('labels',       [],     checkLabels);
-parser.addParameter('labelsFormat', [],     isString);
+parser.addParameter('filetype',         'jpg',  checkType);
+parser.addParameter('quality',          [],     checkQuality);
+parser.addParameter('suffix',           '',     isString);
+parser.addParameter('labels',           [],     checkLabels);
+parser.addParameter('filenameFormat',   [],     isString);
+parser.addParameter('labelsFormat',     [],     isString);
 
 parser.parse(varargin{:});
 
@@ -36,22 +37,22 @@ if ~isempty(P.suffix)
     P.suffix = ['_' P.suffix];
 end
 
-filenameWidth = length(num2str(N));
-filenameFormat = ['%0' num2str(filenameWidth) 'd'];
-
+if isempty(P.filenameFormat)
+    filenameWidth = length(num2str(N));
+    P.filenameFormat = ['%0' num2str(filenameWidth) 'd'];
+end
+    
 if ~isempty(P.labels)
     if isempty(P.labelsFormat)
         labelsWidth = length(num2str(max(P.labels(:))));
-        labelsFormat = ['%' num2str(labelsWidth) 'd'];
-    else
-        labelsFormat = P.labelsFormat;
+        P.labelsFormat = ['%' num2str(labelsWidth) 'd'];
     end
 end
 
 for i_R = 1:N
     
     currentPath = fullfile(saveDir, ...
-        [num2str(i_R, filenameFormat) P.suffix '.' P.filetype]);
+        [num2str(i_R, P.filenameFormat) P.suffix '.' P.filetype]);
     
     if ismember(P.filetype, {'jpg', 'jpeg'})
         imwrite(R(:,:,:,i_R), currentPath, 'Quality', P.quality);
@@ -64,11 +65,11 @@ for i_R = 1:N
     if ~isempty(P.labels)
         if size(P.labels, 1) > 1
             for k = 1:size(P.labels,2)
-                fprintf(fid, [' ' labelsFormat], P.labels(i_R, k));
+                fprintf(fid, [' ' P.labelsFormat], P.labels(i_R, k));
             end
         else % one set of labels for all files
             for k = 1:length(P.labels)
-                fprintf(fid, [' ' labelsFormat], P.labels(k));
+                fprintf(fid, [' ' P.labelsFormat], P.labels(k));
             end
         end
         
