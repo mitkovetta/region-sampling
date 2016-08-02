@@ -1,5 +1,5 @@
 function example(visualize, saveRegions)
-% Example of sampling random regions from and image.
+% Example of sampling random regions from an image.
 %
 
 if ~exist('visualize', 'var') || isempty(visualize)
