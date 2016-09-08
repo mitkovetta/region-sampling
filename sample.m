@@ -89,7 +89,7 @@ for i_R = N:-1:1
     end
     
     if T(i_R).whiteNoise ~= 0
-        current = current + T(i_R).whiteNoise * rand(size(current));
+        current = current + T(i_R).whiteNoise * (2*rand(size(current))-1);
     end
     
     R(:,:,:,i_R) = cast(current, imageClass);
