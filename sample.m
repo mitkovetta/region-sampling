@@ -65,18 +65,18 @@ for i_R = N:-1:1
         T(i_R).vReflection * -sin(T(i_R).rotation) * X + ...
         T(i_R).hReflection * cos(T(i_R).rotation) * Y);
     
-    if T(i_R).elasticAlpha ~= 0 || T(i_R).elasticSigma ~= 0       
+    if T(i_R).elasticAlpha ~= 0 && T(i_R).elasticSigma ~= 0       
         a = T(i_R).elasticAlpha;
         s = T(i_R).elasticSigma;
         w = 4*round(s) + 1;
         
         du = 2*rand(size(U))-1;
         du = imfilter(du, fspecial('gauss', w, s));
-        du = du / (max(du(:))) * sqrt(a);            
+        du = du / (max(du(:))) * a;
         
         dv = 2*rand(size(V))-1;
         dv = imfilter(dv, fspecial('gauss', w, s));
-        dv = dv / (max(dv(:))) * sqrt(a);            
+        dv = dv / (max(dv(:))) * a;
         
         U = U + du;
         V = V + dv;        
