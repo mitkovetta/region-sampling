@@ -72,11 +72,11 @@ for i_R = N:-1:1
         
         du = 2*rand(size(U))-1;
         du = imfilter(du, fspecial('gauss', w, s));
-        du = du / (max(du(:))) * a;
+        du = du / (max(abs(du(:)))) * a;
         
         dv = 2*rand(size(V))-1;
         dv = imfilter(dv, fspecial('gauss', w, s));
-        dv = dv / (max(dv(:))) * a;
+        dv = dv / (max(abs(dv(:)))) * a;
         
         U = U + du;
         V = V + dv;        
