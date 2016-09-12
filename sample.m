@@ -71,11 +71,11 @@ for i_R = N:-1:1
         w = 4*round(s) + 1;
         
         du = 2*rand(size(U))-1;
-        du = imfilter(du, fspecial('gauss', w, s));
+        du = imfilter(du, fspecial('gauss', w, s), 'symmetric');
         du = du / (max(abs(du(:)))) * a;
         
         dv = 2*rand(size(V))-1;
-        dv = imfilter(dv, fspecial('gauss', w, s));
+        dv = imfilter(dv, fspecial('gauss', w, s), 'symmetric');
         dv = dv / (max(abs(dv(:)))) * a;
         
         U = U + du;
