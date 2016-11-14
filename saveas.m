@@ -5,7 +5,7 @@ function saveas(R, saveDir, listFile, varargin)
 V = @validateattributes;
 
 isString        = @(x)V(x, {'char'},	{'vector'});
-checkType       = @(x)(any(validatestring(x, {'jpg', 'jpeg', 'tif', 'png'})));
+checkType       = @(x)(any(validatestring(x, {'jpg', 'jpeg', 'tif', 'png', 'mat'})));
 checkQuality    = @(x)V(x, {'numeric'}, {'scalar', 'integer', 'positive', '<=', 100});
 checkLabels 	= @(x)V(x, {'numeric'}, {'2d', 'nonempty'});
 
@@ -56,6 +56,9 @@ for i_R = 1:N
     
     if ismember(P.filetype, {'jpg', 'jpeg'})
         imwrite(R(:,:,:,i_R), currentPath, 'Quality', P.quality);
+    elseif ismember(P.filetype, {'mat'})
+        data__ = R(:,:,:,i_R); %#ok<NASGU>
+        save(currentPath, 'data__');
     else
         imwrite(R(:,:,:,i_R), currentPath);
     end
