@@ -77,21 +77,22 @@ for i_R = N:-1:1
         T(i_R).yReflection * cos(b) * sin(g) * Y + ...
         T(i_R).zReflection * cos(b) * cos(g) * Z);
     
-    if T(i_R).elasticAlpha ~= 0 && T(i_R).elasticSigma ~= 0       
+    if T(i_R).elasticAlpha ~= 0 && T(i_R).elasticSigma ~= 0     
+        warning('Random elastinc deformation not tested');
+        
         a = T(i_R).elasticAlpha;
         s = T(i_R).elasticSigma;
-        w = 4*round(s) + 1;
         
         du = 2*rand(size(U))-1;
-        du = imfilter(du, fspecial('gauss', w, s), 'symmetric');
+        du = imgaussfilt3(du, s, 'padding', 'symmetric');
         du = du / (max(abs(du(:)))) * a;
         
         dv = 2*rand(size(V))-1;
-        dv = imfilter(dv, fspecial('gauss', w, s), 'symmetric');
+        dv = imgaussfilt3(dv, s, 'padding', 'symmetric');
         dv = dv / (max(abs(dv(:)))) * a;
         
         dw = 2*rand(size(W))-1;
-        dw = imfilter(dw, fspecial('gauss', w, s), 'symmetric');
+        dw = imgaussfilt3(dw, s, 'padding', 'symmetric');
         dw = dw / (max(abs(dw(:)))) * a;
         
         U = U + du;
